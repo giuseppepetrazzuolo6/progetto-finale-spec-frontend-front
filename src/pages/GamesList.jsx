@@ -1,6 +1,19 @@
+import { useContext } from "react"
+import { GlobalContext } from "../context/GlobalContext"
+
 export default function GamesList() {
+    const { games } = useContext(GlobalContext)
 
     return (
-        <div>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab quibusdam doloribus sequi magnam dolore quas sunt quos neque, aspernatur dolorum et assumenda autem cum modi, veritatis exercitationem aut earum ullam.</div>
+        <div>
+            {
+                games && games.map(game => (
+                    <div key={game.id}>
+                        <h4>Titolo del gioco: {game.title}</h4>
+                        <p>categoria: {game.category}</p>
+                    </div>
+                ))
+            }
+        </div>
     )
 }
