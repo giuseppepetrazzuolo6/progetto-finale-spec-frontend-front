@@ -24,7 +24,6 @@ export default function GamesDetails() {
 
     return (
         <>
-
             <div>
                 <div>
                     {game && (

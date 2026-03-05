@@ -1,22 +1,20 @@
 import { useContext } from "react"
 import { GlobalContext } from "../context/GlobalContext"
 
-import { Link } from "react-router-dom"
+import Card from "../components/Card"
 
 export default function GamesList() {
     const { games } = useContext(GlobalContext)
 
     return (
-        <div>
-            {
-                games && games.map(game => (
-                    <div key={game.id}>
-                        <h4>Titolo del gioco: {game.title}</h4>
-                        <p>categoria: {game.category}</p>
-                        <Link to={`/games/${game.id}`}>Dettagli</Link>
-                    </div>
-                ))
-            }
-        </div>
+        <section>
+            <div className="container">
+                {
+                    games && games.map(game => (
+                        <Card key={game.id} game={game.id} />
+                    ))
+                }
+            </div>
+        </section>
     )
 }
