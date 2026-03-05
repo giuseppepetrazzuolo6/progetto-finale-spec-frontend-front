@@ -11,7 +11,7 @@ export default function GamesList() {
             <div className="container">
                 {
                     games && games.map(game => (
-                        <Card key={game.id} game={game.id} />
+                        <Card key={game.id} game={game} />
                     ))
                 }
             </div>

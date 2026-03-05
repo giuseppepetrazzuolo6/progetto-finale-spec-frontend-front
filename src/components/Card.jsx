@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-export default function Card(game) {
+export default function Card({ game }) {
 
 
     return (
