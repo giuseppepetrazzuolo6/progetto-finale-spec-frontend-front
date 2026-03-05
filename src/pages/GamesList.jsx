@@ -13,8 +13,7 @@ export default function GamesList() {
         categoriesOptions,
         sortOrder,
         setSortOrder,
-        compareList,
-        toggleCompare } = useContext(GlobalContext)
+        compareList } = useContext(GlobalContext)
 
     return (
         <section>
@@ -41,7 +40,7 @@ export default function GamesList() {
                 </div>
                 {
                     filteredGames && filteredGames.map(game => (
-                        <Card key={game.id} game={game} compareList={compareList} toggleCompare={toggleCompare} />
+                        <Card key={game.id} game={game} />
                     ))
                 }
             </div>

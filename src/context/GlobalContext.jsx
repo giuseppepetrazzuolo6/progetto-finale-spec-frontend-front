@@ -5,13 +5,14 @@ const apiUrl = import.meta.env.VITE_API_URL
 export const GlobalContext = createContext()
 
 export function GlobalProvider({ children }) {
-    const [games, setGames] = useState([])
-    const [search, setSearch] = useState('')
-    const [category, setCategory] = useState('')
-    const [sortOrder, setSortOrder] = useState('asc')
-    const [compareList, setCompareList] = useState([])
+    const [games, setGames] = useState([]) //variabile di stato per i record
+    const [search, setSearch] = useState('') //variabile di stato per la searcbar
+    const [category, setCategory] = useState('') //variabile di stato per la select
+    const [sortOrder, setSortOrder] = useState('asc') //variabile di stato per l'ordinamento
+    const [compareList, setCompareList] = useState([]) //variabile di stato per il confronto
+    const [favList, setFavList] = useState([]) //variabile di stato per i preferiti
 
-
+    //chiamata API per ottenere tutti i record
     const fetchGames = async () => {
         try {
             const response = await fetch(`${apiUrl}/games`)
@@ -25,6 +26,7 @@ export function GlobalProvider({ children }) {
         fetchGames()
     }, [])
 
+    //filtraggi per searchbar, select ed ordinamento alfabetico
     const filteredGames = useMemo(() => {
         let result = games.filter(g =>
             g.title.toLowerCase().includes(search.toLowerCase()) &&
@@ -47,6 +49,7 @@ export function GlobalProvider({ children }) {
 
     const categoriesOptions = [...new Set(games.map(g => g.category))]
 
+    //funzione per confronto dei record
     const toggleCompare = async (game) => {
         try {
             const response = await fetch(`${apiUrl}/games/${game.id}`)
@@ -66,10 +69,47 @@ export function GlobalProvider({ children }) {
         }
     }
 
+    //gestione della lista dei preferiti
+    const addToFav = (game) => {
+        setFavList(prev => {
+            if (prev.find(g => g.id === game.id)) {
+                return prev
+            }
+            return [...prev, game]
+        })
+    }
 
+    const removeFromFav = (id) => {
+        setFavList(prev => prev.filter(g => g.id !== id))
+    }
+
+    const isInFav = (id) => {
+        return favList.some(g => g.id === id)
+    }
+
+    const clearFav = () => {
+        setFavList([])
+    }
 
     return (
-        <GlobalContext.Provider value={{ games, filteredGames, search, setSearch, category, setCategory, categoriesOptions, sortOrder, setSortOrder, toggleCompare, compareList }}>
+        <GlobalContext.Provider value={{
+            games,
+            filteredGames,
+            search,
+            setSearch,
+            category,
+            setCategory,
+            categoriesOptions,
+            sortOrder,
+            setSortOrder,
+            toggleCompare,
+            compareList,
+            favList,
+            addToFav,
+            removeFromFav,
+            clearFav,
+            isInFav
+        }}>
             {children}
         </GlobalContext.Provider>
     )

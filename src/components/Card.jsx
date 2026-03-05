@@ -1,6 +1,10 @@
+import { useContext } from "react"
+import { GlobalContext } from "../context/GlobalContext"
+
 import { Link } from "react-router-dom"
 
-export default function Card({ game, compareList, toggleCompare }) {
+export default function Card({ game }) {
+    const { toggleCompare, compareList, addToFav, removeFromFav, isInFav } = useContext(GlobalContext)
 
 
     return (
@@ -13,6 +17,7 @@ export default function Card({ game, compareList, toggleCompare }) {
                 <button className="btn btn-secondary mx-1" onClick={() => toggleCompare(game)}>
                     {compareList.find(c => c.id === game.id) ? "Rimuovi da confronto" : "Confronta"}
                 </button>
+                <button onClick={() => isInFav(game.id) ? removeFromFav(game.id) : addToFav(game)}>Aggiungi ai preferiti</button>
             </div>
         </div>
     )
