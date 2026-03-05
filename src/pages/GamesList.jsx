@@ -4,10 +4,17 @@ import { GlobalContext } from "../context/GlobalContext"
 import Card from "../components/Card"
 
 export default function GamesList() {
-    const { filteredGames, search, setSearch, category, setCategory, categoriesOptions, sortOrder, setSortOrder } = useContext(GlobalContext)
-
-
-
+    const {
+        filteredGames,
+        search,
+        setSearch,
+        category,
+        setCategory,
+        categoriesOptions,
+        sortOrder,
+        setSortOrder,
+        compareList,
+        toggleCompare } = useContext(GlobalContext)
 
     return (
         <section>
@@ -34,10 +41,27 @@ export default function GamesList() {
                 </div>
                 {
                     filteredGames && filteredGames.map(game => (
-                        <Card key={game.id} game={game} />
+                        <Card key={game.id} game={game} compareList={compareList} toggleCompare={toggleCompare} />
                     ))
                 }
             </div>
+
+            {compareList.length > 0 && (
+                <div className="compare-section">
+                    <h2>Confronto</h2>
+                    <div style={{ display: "flex", gap: "20px" }}>
+                        {compareList.map(g => (
+                            <div key={g.id}>
+                                <h3>{g.title}</h3>
+                                <p>Categoria: {g.category}</p>
+                                <p>Prezzo: {g.price}</p>
+                                <p>Valutazione: {g.rating}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
         </section>
     )
 }

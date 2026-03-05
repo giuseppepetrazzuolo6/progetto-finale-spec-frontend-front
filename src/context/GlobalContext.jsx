@@ -9,6 +9,7 @@ export function GlobalProvider({ children }) {
     const [search, setSearch] = useState('')
     const [category, setCategory] = useState('')
     const [sortOrder, setSortOrder] = useState('asc')
+    const [compareList, setCompareList] = useState([])
 
 
     const fetchGames = async () => {
@@ -46,10 +47,29 @@ export function GlobalProvider({ children }) {
 
     const categoriesOptions = [...new Set(games.map(g => g.category))]
 
+    const toggleCompare = async (game) => {
+        try {
+            const response = await fetch(`${apiUrl}/games/${game.id}`)
+            const data = await response.json()
+            const fullGame = data.game
+            setCompareList(prev => {
+                if (prev.find(g => g.id === fullGame.id)) {
+                    return prev.filter(g => g.id !== fullGame.id)
+                }
+                if (prev.length >= 2) {
+                    return [prev[1], fullGame]
+                }
+                return [...prev, fullGame]
+            })
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
 
 
     return (
-        <GlobalContext.Provider value={{ games, filteredGames, search, setSearch, category, setCategory, categoriesOptions, sortOrder, setSortOrder }}>
+        <GlobalContext.Provider value={{ games, filteredGames, search, setSearch, category, setCategory, categoriesOptions, sortOrder, setSortOrder, toggleCompare, compareList }}>
             {children}
         </GlobalContext.Provider>
     )
