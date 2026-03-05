@@ -4,7 +4,7 @@ import { GlobalContext } from "../context/GlobalContext"
 import Card from "../components/Card"
 
 export default function GamesList() {
-    const { filteredGames, search, setSearch, category, setCategory, categoriesOptions } = useContext(GlobalContext)
+    const { filteredGames, search, setSearch, category, setCategory, categoriesOptions, sortOrder, setSortOrder } = useContext(GlobalContext)
 
 
 
@@ -26,7 +26,11 @@ export default function GamesList() {
                             </option>
                         ))}
                     </select>
-
+                    <button
+                        onClick={() =>
+                            setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
+                        {sortOrder === "asc" ? <i className="bi bi-sort-alpha-up"></i> : <i className="bi bi-sort-alpha-up-alt"></i>}
+                    </button>
                 </div>
                 {
                     filteredGames && filteredGames.map(game => (
