@@ -1,22 +1,30 @@
 import { NavLink } from "react-router-dom"
 
+import logo from '../img/PowerPLay_shop.png'
+
 export default function NavBar() {
 
     return (
-        <nav
-            className="navbar navbar-expand-sm navbar-light">
+        <nav className="navbar navbar-expand-sm navbar-light">
             <div className="container">
-                <div className="navbar-nav me-auto mt-2 mt-lg-0">
-                    <div className="nav-item">
-                        <NavLink to='/' className="navbar nav-link mx-2">
-                            Lista Giochi
-                        </NavLink>
-                    </div>
-                    <div className="nav-item">
-                        <NavLink to='/favourite' className="navbar nav-link mx-2">
-                            Preferiti
-                        </NavLink>
-                    </div>
+                <div className="img-box">
+                    <img src={logo} alt="logo_ecommerce" />
+                </div>
+                <div className="text-center">
+                    <h3>POWERPLAY</h3>
+                    <p>GAMESHOP</p>
+                </div>
+                <div className="navbar-nav">
+                    <NavLink
+                        to='/'
+                        className="nav-link mx-2">
+                        Lista Giochi
+                    </NavLink>
+                    <NavLink
+                        to='/favourite'
+                        className="nav-link mx-2">
+                        Preferiti
+                    </NavLink>
                 </div>
             </div>
         </nav>

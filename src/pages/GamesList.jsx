@@ -16,14 +16,16 @@ export default function GamesList() {
         compareList } = useContext(GlobalContext)
 
     return (
-        <section>
+        <section className="py-4">
             <div className="container">
-                <div>
-                    <input className="searchbar" type="text"
+                <div className="filters">
+                    <input className="searchbar"
+                        type="text"
                         placeholder="Cerca..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)} />
-                    <select value={category}
+                    <select className="form-select w-auto"
+                        value={category}
                         onChange={(e) => setCategory(e.target.value)}>
                         <option value="">Tutte le categorie</option>
                         {categoriesOptions.map(cat => (
@@ -38,11 +40,13 @@ export default function GamesList() {
                         {sortOrder === "asc" ? <i className="bi bi-sort-alpha-up"></i> : <i className="bi bi-sort-alpha-up-alt"></i>}
                     </button>
                 </div>
-                {
-                    filteredGames && filteredGames.map(game => (
-                        <Card key={game.id} game={game} />
-                    ))
-                }
+                <div className="row">
+                    {filteredGames?.map(game => (
+                        <div key={game.id} className="col-12 col-md-6 col-lg-4">
+                            <Card game={game} />
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {compareList.length > 0 && (
