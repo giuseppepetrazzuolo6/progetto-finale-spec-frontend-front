@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, Link } from "react-router-dom"
+
 
 import logo from '../img/PowerPLay_shop.png'
 
@@ -8,7 +9,9 @@ export default function NavBar() {
         <nav className="navbar navbar-expand-sm navbar-light">
             <div className="container">
                 <div className="img-box">
-                    <img src={logo} alt="logo_ecommerce" />
+                    <Link to='/'>
+                        <img src={logo} alt="logo_ecommerce" />
+                    </Link>
                 </div>
                 <div className="text-center">
                     <h3>POWERPLAY</h3>
