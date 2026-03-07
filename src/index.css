@@ -188,6 +188,49 @@ body {
 }
 
 /* ===============================
+   SCROLL TO TOP BUTTON
+================================ */
+
+.scroll-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(120, 130, 255, 0.2);
+    background: linear-gradient(45deg, #4f6bff, #8a5bff);
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.35),
+        0 0 10px rgba(111, 139, 255, 0.25);
+
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+/* hover effect */
+
+.scroll-top-btn:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.45),
+        0 0 18px rgba(111, 139, 255, 0.5);
+}
+
+/* click effect */
+
+.scroll-top-btn:active {
+    transform: scale(0.95);
+}
+
+/* ===============================
    DETAIL PAGE
 ================================ */
 
