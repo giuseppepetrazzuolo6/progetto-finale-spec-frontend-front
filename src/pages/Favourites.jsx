@@ -18,6 +18,13 @@ export default function Favourites() {
                 </div>
             ) : (
                 <section>
+                    <div className="text-end">
+                        <button
+                            className="btn btn-outline-danger"
+                            onClick={clearFav}>
+                            Elimina tutti
+                        </button>
+                    </div>
                     {favList.map(game => (
                         <div className="card p-3 my-2" key={game.id}>
                             <div className="d-flex justify-content-between align-items-center">
@@ -30,13 +37,6 @@ export default function Favourites() {
                             </div>
                         </div>
                     ))}
-                    <div className="text-end">
-                        <button
-                            className="btn btn-outline-danger"
-                            onClick={clearFav}>
-                            Elimina tutti
-                        </button>
-                    </div>
                 </section>
             )}
         </div>
