@@ -1,7 +1,18 @@
-import { useContext } from "react"
+import { useContext, useMemo, useState } from "react"
 import { GlobalContext } from "../context/GlobalContext"
 
 import Card from "../components/Card"
+
+//funzione di debouce
+function debounce(callback, delay) {
+    let timer;
+    return (value) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            callback(value);
+        }, delay);
+    };
+}
 
 export default function GamesList() {
     const {
@@ -15,6 +26,18 @@ export default function GamesList() {
         setSortOrder,
         compareList } = useContext(GlobalContext)
 
+    const [inputValue, setInputValue] = useState("")
+
+    const debouncedSearch = useMemo(() => {
+        return debounce(setSearch, 500)
+    }, [setSearch])
+
+    const handleSearch = (e) => {
+        const value = e.target.value
+        setInputValue(value)
+        debouncedSearch(value)
+    }
+
     return (
         <section className="py-4">
             <div className="container">
@@ -22,8 +45,8 @@ export default function GamesList() {
                     <input className="searchbar"
                         type="text"
                         placeholder="Cerca..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)} />
+                        value={inputValue}
+                        onChange={handleSearch} />
                     <select className="form-select w-auto"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}>
