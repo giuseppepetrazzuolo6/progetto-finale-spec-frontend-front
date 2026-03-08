@@ -14,7 +14,7 @@ export function GlobalProvider({ children }) {
 
     //variabile di stato per i preferiti
     const [favList, setFavList] = useState(() => {
-        const savedFav = localStorage.getItem("favourites") //localstorage per salvare i preferiti nella memoria locale
+        const savedFav = localStorage.getItem("favourites") //localstorage per salvare i dati nella memoria locale
         return savedFav ? JSON.parse(savedFav) : []
     })
 
