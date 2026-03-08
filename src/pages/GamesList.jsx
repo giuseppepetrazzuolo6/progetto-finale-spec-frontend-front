@@ -17,7 +17,6 @@ function debounce(callback, delay) {
 export default function GamesList() {
     const {
         filteredGames,
-        search,
         setSearch,
         category,
         setCategory,
@@ -58,12 +57,18 @@ export default function GamesList() {
                         ))}
                     </select>
                     <button
+                        aria-label="Ordina giochi"
                         onClick={() =>
                             setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
                         {sortOrder === "asc" ? <i className="bi bi-sort-alpha-up"></i> : <i className="bi bi-sort-alpha-up-alt"></i>}
                     </button>
                 </div>
                 <div className="row">
+                    {filteredGames.length === 0 && (
+                        <p className="text-center w-100">
+                            Nessun gioco trovato...
+                        </p>
+                    )}
                     {filteredGames?.map(game => (
                         <div key={game.id} className="col-12 col-md-6 col-lg-4">
                             <Card game={game} />
