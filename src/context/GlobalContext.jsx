@@ -9,6 +9,7 @@ export function GlobalProvider({ children }) {
     const [search, setSearch] = useState('') //variabile di stato per la searcbar
     const [category, setCategory] = useState('') //variabile di stato per la select
     const [sortOrder, setSortOrder] = useState('asc') //variabile di stato per l'ordinamento
+    const [compareIds, setCompareIds] = useState([]) //variabile di stato per fetchData tramite id
     const [compareList, setCompareList] = useState([]) //variabile di stato per il confronto
     const [favList, setFavList] = useState([]) //variabile di stato per i preferiti
 
@@ -49,25 +50,45 @@ export function GlobalProvider({ children }) {
 
     const categoriesOptions = [...new Set(games.map(g => g.category))]
 
-    //funzione per confronto dei record
-    const toggleCompare = async (game) => {
-        try {
-            const response = await fetch(`${apiUrl}/games/${game.id}`)
-            const data = await response.json()
-            const fullGame = data.game
-            setCompareList(prev => {
-                if (prev.find(g => g.id === fullGame.id)) {
-                    return prev.filter(g => g.id !== fullGame.id)
-                }
-                if (prev.length >= 2) {
-                    return [prev[1], fullGame]
-                }
-                return [...prev, fullGame]
-            })
-        } catch (error) {
-            console.error(error)
+    //funzione per ottenere i record tramite id
+    const fetchGameById = async (id) => {
+        const response = await fetch(`${apiUrl}/games/${id}`)
+        if (!response.ok) {
+            throw new Error(`Errore HTTP: ${response.status}`)
         }
+        const data = await response.json()
+        return data.game
     }
+
+    const toggleCompare = (game) => {
+        setCompareIds(prev => {
+            if (prev.includes(game.id)) {
+                return prev.filter(id => id !== game.id)
+            }
+            if (prev.length >= 2) {
+                return [prev[1], game.id]
+            }
+            return [...prev, game.id]
+        })
+    }
+
+    useEffect(() => {
+        if (compareIds.length === 0) {
+            setCompareList([])
+            return
+        }
+        const loadCompareGames = async () => {
+            try {
+                const fullGames = await Promise.all(
+                    compareIds.map(id => fetchGameById(id))
+                )
+                setCompareList(fullGames)
+            } catch (error) {
+                console.error("Errore nel caricamento del confronto:", error)
+            }
+        }
+        loadCompareGames()
+    }, [compareIds])
 
     //gestione della lista dei preferiti
     const addToFav = (game) => {
