@@ -95,6 +95,10 @@ export function GlobalProvider({ children }) {
         loadCompareGames()
     }, [compareIds])
 
+    const clearCompareList = () => {
+        setCompareList([])
+    }
+
     //gestione della lista dei preferiti
     const addToFav = (game) => {
         setFavList(prev => {
@@ -134,6 +138,7 @@ export function GlobalProvider({ children }) {
             setSortOrder,
             toggleCompare,
             compareList,
+            clearCompareList,
             favList,
             addToFav,
             removeFromFav,

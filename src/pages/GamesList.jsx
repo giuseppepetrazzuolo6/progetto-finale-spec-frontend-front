@@ -1,5 +1,6 @@
-import { useContext, useMemo, useState } from "react"
+import { useCallback, useContext, useState } from "react"
 import { GlobalContext } from "../context/GlobalContext"
+import { Link } from "react-router-dom";
 
 import Card from "../components/Card"
 
@@ -27,9 +28,10 @@ export default function GamesList() {
 
     const [inputValue, setInputValue] = useState("") //variabile di stato per controllare l'input
 
-    const debouncedSearch = useMemo(() => {
-        return debounce(setSearch, 500)
-    }, [setSearch])
+    const debouncedSearch = useCallback(
+        debounce(setSearch, 500),
+        [setSearch]
+    );
 
     const handleSearch = (e) => {
         const value = e.target.value
@@ -63,6 +65,13 @@ export default function GamesList() {
                         {sortOrder === "asc" ? <i className="bi bi-sort-alpha-up"></i> : <i className="bi bi-sort-alpha-up-alt"></i>}
                     </button>
                 </div>
+                {compareList.length > 0 && (
+                    <div className="mb-3">
+                        <Link to="/compare" className="btn btn-primary">
+                            Vai al confronto ({compareList.length})
+                        </Link>
+                    </div>
+                )}
                 <div className="row">
                     {filteredGames.length === 0 && (
                         <p className="text-center w-100">
@@ -76,23 +85,6 @@ export default function GamesList() {
                     ))}
                 </div>
             </div>
-
-            {compareList.length > 0 && (
-                <div className="compare-section">
-                    <h2>Confronto</h2>
-                    <div style={{ display: "flex", gap: "20px" }}>
-                        {compareList.map(g => (
-                            <div key={g.id}>
-                                <h3>{g.title}</h3>
-                                <p>Categoria: {g.category}</p>
-                                <p>Prezzo: {g.price}</p>
-                                <p>Valutazione: {g.rating}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
         </section>
     )
 }
