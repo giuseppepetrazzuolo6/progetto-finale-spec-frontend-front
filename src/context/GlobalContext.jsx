@@ -11,7 +11,12 @@ export function GlobalProvider({ children }) {
     const [sortOrder, setSortOrder] = useState('asc') //variabile di stato per l'ordinamento
     const [compareIds, setCompareIds] = useState([]) //variabile di stato per fetchData tramite id
     const [compareList, setCompareList] = useState([]) //variabile di stato per il confronto
-    const [favList, setFavList] = useState([]) //variabile di stato per i preferiti
+
+    //variabile di stato per i preferiti
+    const [favList, setFavList] = useState(() => {
+        const savedFav = localStorage.getItem("favourites") //localstorage per salvare i preferiti nella memoria locale
+        return savedFav ? JSON.parse(savedFav) : []
+    })
 
     //chiamata API per ottenere tutti i record
     const fetchGames = async () => {
@@ -111,6 +116,10 @@ export function GlobalProvider({ children }) {
     const clearFav = () => {
         setFavList([])
     }
+
+    useEffect(() => {
+        localStorage.setItem("favourites", JSON.stringify(favList))
+    }, [favList])
 
     return (
         <GlobalContext.Provider value={{

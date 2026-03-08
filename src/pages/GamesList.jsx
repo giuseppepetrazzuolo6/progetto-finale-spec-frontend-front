@@ -26,7 +26,7 @@ export default function GamesList() {
         setSortOrder,
         compareList } = useContext(GlobalContext)
 
-    const [inputValue, setInputValue] = useState("")
+    const [inputValue, setInputValue] = useState("") //variabile di stato per controllare l'input
 
     const debouncedSearch = useMemo(() => {
         return debounce(setSearch, 500)
