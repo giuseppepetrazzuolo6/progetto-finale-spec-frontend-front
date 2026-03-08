@@ -309,6 +309,20 @@ body {
     border: 1px solid rgba(120, 130, 255, 0.1);
 }
 
+/*FOOTER*/
+
+footer {
+    background: rgba(18, 20, 40, 0.85);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(120, 130, 255, 0.1);
+    padding: 15px 0;
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
 /* ===============================
    RESPONSIVE
 ================================ */
