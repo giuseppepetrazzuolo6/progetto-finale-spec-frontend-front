@@ -61,7 +61,7 @@ export default function GamesDetails() {
                     </div>
                     <div>
                         <strong>Prezzo</strong>
-                        <p>{game.price}€</p>
+                        <p>{game.price} €</p>
                     </div>
                     <div>
                         <strong>Valutazione</strong>
