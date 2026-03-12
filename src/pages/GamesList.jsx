@@ -1,20 +1,9 @@
-import { useCallback, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { GlobalContext } from "../context/GlobalContext"
 import { Link } from "react-router-dom";
 
 import Card from "../components/Card"
 import useDebounce from "../customHooks/useDebounce";
-
-//funzione di debouce
-function debounce(callback, delay) {
-    let timer;
-    return (value) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            callback(value);
-        }, delay);
-    };
-}
 
 export default function GamesList() {
     const {
@@ -27,9 +16,9 @@ export default function GamesList() {
         setSortOrder,
         compareList } = useContext(GlobalContext)
 
-    const [inputValue, setInputValue] = useState("") //variabile di stato per controllare l'input
+    const [inputValue, setInputValue] = useState("") // variabile di stato per controllare l'input
 
-    const debouncedSearch = useDebounce(setSearch, 500);
+    const debouncedSearch = useDebounce(setSearch, 500); // utilizzo del custom hook
 
     const handleSearch = (e) => {
         const value = e.target.value
