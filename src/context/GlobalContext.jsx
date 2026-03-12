@@ -1,38 +1,38 @@
 import { createContext } from "react";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+
 const apiUrl = import.meta.env.VITE_API_URL
 
 export const GlobalContext = createContext()
 
 export function GlobalProvider({ children }) {
-    const [games, setGames] = useState([]) //variabile di stato per i record
-    const [search, setSearch] = useState('') //variabile di stato per la searcbar
-    const [category, setCategory] = useState('') //variabile di stato per la select
-    const [sortOrder, setSortOrder] = useState('asc') //variabile di stato per l'ordinamento
-    const [compareIds, setCompareIds] = useState([]) //variabile di stato per fetchData tramite id
-    const [compareList, setCompareList] = useState([]) //variabile di stato per il confronto
 
-    //variabile di stato per i preferiti
+    const [games, setGames] = useState([])
+    const [search, setSearch] = useState('')
+    const [category, setCategory] = useState('')
+    const [sortOrder, setSortOrder] = useState('asc')
+    const [compareIds, setCompareIds] = useState([])
+    const [compareList, setCompareList] = useState([])
+
     const [favList, setFavList] = useState(() => {
-        const savedFav = localStorage.getItem("favourites") //localstorage per salvare i dati nella memoria locale
+        const savedFav = localStorage.getItem("favourites")
         return savedFav ? JSON.parse(savedFav) : []
     })
 
-    //chiamata API per ottenere tutti i record
-    const fetchGames = async () => {
+    const fetchGames = useCallback(async () => {
         try {
             const response = await fetch(`${apiUrl}/games`)
             const data = await response.json()
-            return setGames(data)
+            setGames(data)
         } catch (error) {
             console.error(error)
         }
-    }
-    useEffect(() => {
-        fetchGames()
     }, [])
 
-    //filtraggi per searchbar, select ed ordinamento alfabetico
+    useEffect(() => {
+        fetchGames()
+    }, [fetchGames])
+
     const filteredGames = useMemo(() => {
         let result = games.filter(g =>
             g.title.toLowerCase().includes(search.toLowerCase()) &&
@@ -55,17 +55,16 @@ export function GlobalProvider({ children }) {
 
     const categoriesOptions = [...new Set(games.map(g => g.category))]
 
-    //funzione per ottenere i record tramite id
-    const fetchGameById = async (id) => {
+    const fetchGameById = useCallback(async (id) => {
         const response = await fetch(`${apiUrl}/games/${id}`)
         if (!response.ok) {
             throw new Error(`Errore HTTP: ${response.status}`)
         }
         const data = await response.json()
         return data.game
-    }
+    }, [])
 
-    const toggleCompare = (game) => {
+    const toggleCompare = useCallback((game) => {
         setCompareIds(prev => {
             if (prev.includes(game.id)) {
                 return prev.filter(id => id !== game.id)
@@ -75,13 +74,14 @@ export function GlobalProvider({ children }) {
             }
             return [...prev, game.id]
         })
-    }
+    }, [])
 
     useEffect(() => {
         if (compareIds.length === 0) {
             setCompareList([])
             return
         }
+
         const loadCompareGames = async () => {
             try {
                 const fullGames = await Promise.all(
@@ -92,34 +92,35 @@ export function GlobalProvider({ children }) {
                 console.error("Errore nel caricamento del confronto:", error)
             }
         }
+
         loadCompareGames()
-    }, [compareIds])
 
-    const clearCompareList = () => {
+    }, [compareIds, fetchGameById])
+
+    const clearCompareList = useCallback(() => {
         setCompareList([])
-    }
+    }, [])
 
-    //gestione della lista dei preferiti
-    const addToFav = (game) => {
+    const addToFav = useCallback((game) => {
         setFavList(prev => {
             if (prev.find(g => g.id === game.id)) {
                 return prev
             }
             return [...prev, game]
         })
-    }
+    }, [])
 
-    const removeFromFav = (id) => {
+    const removeFromFav = useCallback((id) => {
         setFavList(prev => prev.filter(g => g.id !== id))
-    }
+    }, [])
 
-    const isInFav = (id) => {
+    const isInFav = useCallback((id) => {
         return favList.some(g => g.id === id)
-    }
+    }, [favList])
 
-    const clearFav = () => {
+    const clearFav = useCallback(() => {
         setFavList([])
-    }
+    }, [])
 
     useEffect(() => {
         localStorage.setItem("favourites", JSON.stringify(favList))
