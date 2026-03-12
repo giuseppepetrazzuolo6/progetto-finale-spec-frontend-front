@@ -3,6 +3,7 @@ import { GlobalContext } from "../context/GlobalContext"
 import { Link } from "react-router-dom";
 
 import Card from "../components/Card"
+import useDebounce from "../customHooks/useDebounce";
 
 //funzione di debouce
 function debounce(callback, delay) {
@@ -28,10 +29,7 @@ export default function GamesList() {
 
     const [inputValue, setInputValue] = useState("") //variabile di stato per controllare l'input
 
-    const debouncedSearch = useCallback(
-        debounce(setSearch, 500),
-        [setSearch]
-    );
+    const debouncedSearch = useDebounce(setSearch, 500);
 
     const handleSearch = (e) => {
         const value = e.target.value
