@@ -1,6 +1,4 @@
-import { createContext } from "react";
-import { useState, useEffect, useMemo, useCallback } from "react";
-
+import { createContext, useState, useEffect, useMemo, useCallback } from "react";
 const apiUrl = import.meta.env.VITE_API_URL
 
 export const GlobalContext = createContext()
@@ -24,12 +22,18 @@ export function GlobalProvider({ children }) {
     const fetchGames = useCallback(async () => {
         try {
             const response = await fetch(`${apiUrl}/games`)
+
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`)
+            }
+
             const data = await response.json()
             setGames(data)
+
         } catch (error) {
-            console.error(error)
+            console.error("Errore nel recupero dei giochi:", error)
         }
-    }, [])
+    }, [apiUrl])
 
     useEffect(() => {
         fetchGames()
@@ -50,17 +54,27 @@ export function GlobalProvider({ children }) {
         return result
     }, [search, games, category, sortOrder])
 
-    const categoriesOptions = [...new Set(games.map(g => g.category))]
+    const categoriesOptions = useMemo(() => {
+        return [...new Set(games.map(g => g.category))]
+    }, [games])
 
     //chiamata API per singolo record(id)
     const fetchGameById = useCallback(async (id) => {
-        const response = await fetch(`${apiUrl}/games/${id}`)
-        if (!response.ok) {
-            throw new Error(`Errore HTTP: ${response.status}`)
+        try {
+            const response = await fetch(`${apiUrl}/games/${id}`)
+
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`)
+            }
+
+            const data = await response.json()
+            return data.game
+
+        } catch (error) {
+            console.error(`Errore nel recupero del gioco con id ${id}:`, error)
+            throw error
         }
-        const data = await response.json()
-        return data.game
-    }, [])
+    }, [apiUrl])
 
     //funzione per aggiungere record al confronto
     const toggleCompare = useCallback((game) => {
@@ -98,6 +112,7 @@ export function GlobalProvider({ children }) {
     }, [compareIds, fetchGameById])
 
     const clearCompareList = useCallback(() => {
+        setCompareIds([])
         setCompareList([])
     }, [])
 
@@ -115,9 +130,9 @@ export function GlobalProvider({ children }) {
         setFavList(prev => prev.filter(g => g.id !== id))
     }, [])
 
-    const isInFav = useCallback((id) => {
+    const isInFav = (id) => {
         return favList.some(g => g.id === id)
-    }, [favList])
+    }
 
     const clearFav = useCallback(() => {
         setFavList([])

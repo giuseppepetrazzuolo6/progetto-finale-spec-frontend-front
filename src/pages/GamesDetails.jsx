@@ -15,17 +15,22 @@ export default function GamesDetails() {
         isInFav
     } = useContext(GlobalContext)
 
-    const fetchDetails = async () => {
-        try {
-            const response = await fetch(`${apiUrl}/games/${id}`)
-            const data = await response.json()
-            setGame(data.game)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     useEffect(() => {
+        const fetchDetails = async () => {
+            try {
+                const response = await fetch(`${apiUrl}/games/${id}`)
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error: ${response.status}`)
+                }
+
+                const data = await response.json()
+                setGame(data.game)
+
+            } catch (error) {
+                console.error("Errore nel recupero del gioco:", error)
+            }
+        }
         fetchDetails()
     }, [id])
 
