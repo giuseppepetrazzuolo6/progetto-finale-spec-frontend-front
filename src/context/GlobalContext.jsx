@@ -19,25 +19,20 @@ export function GlobalProvider({ children }) {
     })
 
     // chiamata API per ottenere tutti i record
-    const fetchGames = useCallback(async () => {
-        try {
-            const response = await fetch(`${apiUrl}/games`)
-
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`)
-            }
-
-            const data = await response.json()
-            setGames(data)
-
-        } catch (error) {
-            console.error("Errore nel recupero dei giochi:", error)
-        }
-    }, [apiUrl])
-
     useEffect(() => {
-        fetchGames()
-    }, [fetchGames])
+        const fetchGames = async () => {
+            try {
+                const response = await fetch(`${apiUrl}/games`);
+                if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+                const data = await response.json();
+                setGames(data);
+            } catch (error) {
+                console.error("Errore nel recupero dei giochi:", error);
+            }
+        };
+
+        fetchGames();
+    }, []);
 
     //filtraggi per searchbar, select ed ordinamento alfabetico
     const filteredGames = useMemo(() => {
@@ -59,22 +54,17 @@ export function GlobalProvider({ children }) {
     }, [games])
 
     //chiamata API per singolo record(id)
-    const fetchGameById = useCallback(async (id) => {
+    const fetchGameById = async (id) => {
         try {
-            const response = await fetch(`${apiUrl}/games/${id}`)
-
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`)
-            }
-
-            const data = await response.json()
-            return data.game
-
+            const response = await fetch(`${apiUrl}/games/${id}`);
+            if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+            const data = await response.json();
+            return data.game;
         } catch (error) {
-            console.error(`Errore nel recupero del gioco con id ${id}:`, error)
-            throw error
+            console.error(`Errore nel recupero del gioco con id ${id}:`, error);
+            throw error;
         }
-    }, [apiUrl])
+    }
 
     //funzione per aggiungere record al confronto
     const toggleCompare = useCallback((game) => {
@@ -108,8 +98,7 @@ export function GlobalProvider({ children }) {
         }
 
         loadCompareGames()
-
-    }, [compareIds, fetchGameById])
+    }, [compareIds])
 
     const clearCompareList = useCallback(() => {
         setCompareIds([])
@@ -130,9 +119,9 @@ export function GlobalProvider({ children }) {
         setFavList(prev => prev.filter(g => g.id !== id))
     }, [])
 
-    const isInFav = (id) => {
-        return favList.some(g => g.id === id)
-    }
+    const isInFav = useCallback((id) => {
+        return favList.some(g => g.id === id);
+    }, [favList]);
 
     const clearFav = useCallback(() => {
         setFavList([])
