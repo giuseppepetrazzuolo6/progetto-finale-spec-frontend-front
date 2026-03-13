@@ -7,18 +7,20 @@ export const GlobalContext = createContext()
 
 export function GlobalProvider({ children }) {
 
-    const [games, setGames] = useState([])
-    const [search, setSearch] = useState('')
-    const [category, setCategory] = useState('')
-    const [sortOrder, setSortOrder] = useState('asc')
-    const [compareIds, setCompareIds] = useState([])
-    const [compareList, setCompareList] = useState([])
+    const [games, setGames] = useState([]) //variabile di stato per i record
+    const [search, setSearch] = useState('') //variabile di stato per searchbar
+    const [category, setCategory] = useState('') //vairabile di stato per select
+    const [sortOrder, setSortOrder] = useState('asc') //variabile di stato per ordinamento
+    const [compareIds, setCompareIds] = useState([]) //variabile di stato per fetching tramite id
+    const [compareList, setCompareList] = useState([]) //variabile di stato per il confronto
 
+    // variabile di stato per i preferiti
     const [favList, setFavList] = useState(() => {
         const savedFav = localStorage.getItem("favourites")
         return savedFav ? JSON.parse(savedFav) : []
     })
 
+    // chiamata API per ottenere tutti i record
     const fetchGames = useCallback(async () => {
         try {
             const response = await fetch(`${apiUrl}/games`)
@@ -33,6 +35,7 @@ export function GlobalProvider({ children }) {
         fetchGames()
     }, [fetchGames])
 
+    //filtraggi per searchbar, select ed ordinamento alfabetico
     const filteredGames = useMemo(() => {
         let result = games.filter(g =>
             g.title.toLowerCase().includes(search.toLowerCase()) &&
@@ -49,6 +52,7 @@ export function GlobalProvider({ children }) {
 
     const categoriesOptions = [...new Set(games.map(g => g.category))]
 
+    //chiamata API per singolo record(id)
     const fetchGameById = useCallback(async (id) => {
         const response = await fetch(`${apiUrl}/games/${id}`)
         if (!response.ok) {
@@ -58,6 +62,7 @@ export function GlobalProvider({ children }) {
         return data.game
     }, [])
 
+    //funzione per aggiungere record al confronto
     const toggleCompare = useCallback((game) => {
         setCompareIds(prev => {
             if (prev.includes(game.id)) {
@@ -70,6 +75,7 @@ export function GlobalProvider({ children }) {
         })
     }, [])
 
+    //promise.all per gestire le chiamate API
     useEffect(() => {
         if (compareIds.length === 0) {
             setCompareList([])
@@ -95,6 +101,7 @@ export function GlobalProvider({ children }) {
         setCompareList([])
     }, [])
 
+    //gestione lista preferiti
     const addToFav = useCallback((game) => {
         setFavList(prev => {
             if (prev.find(g => g.id === game.id)) {
