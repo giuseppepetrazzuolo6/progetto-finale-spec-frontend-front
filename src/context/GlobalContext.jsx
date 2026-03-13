@@ -38,17 +38,11 @@ export function GlobalProvider({ children }) {
             g.title.toLowerCase().includes(search.toLowerCase()) &&
             (category === '' || g.category === category))
 
-        if (sortOrder === "asc") {
-            result = [...result].sort((a, b) =>
-                a.title.localeCompare(b.title)
-            )
-        }
-
-        if (sortOrder === "desc") {
-            result = [...result].sort((a, b) =>
-                b.title.localeCompare(a.title)
-            )
-        }
+        result = [...result].sort((a, b) =>
+            sortOrder === "asc"
+                ? a.title.localeCompare(b.title)
+                : b.title.localeCompare(a.title)
+        )
 
         return result
     }, [search, games, category, sortOrder])
