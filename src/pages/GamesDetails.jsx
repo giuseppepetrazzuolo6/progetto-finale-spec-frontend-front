@@ -87,7 +87,7 @@ export default function GamesDetails() {
                             ? "Rimuovi dai Preferiti"
                             : "Aggiungi ai Preferiti"}
                     </button>
-                    <Link className="btn btn-primary btn-sm" to="/">
+                    <Link className="btn btn-primary btn-sm mx-2" to="/">
                         ← Torna alla lista giochi
                     </Link>
                 </div>
