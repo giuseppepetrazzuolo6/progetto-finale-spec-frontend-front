@@ -61,9 +61,11 @@ export default function GamesList() {
                 )}
                 <div className="row">
                     {filteredGames.length === 0 && (
-                        <p className="text-center w-100">
-                            Nessun gioco trovato...
-                        </p>
+                        <div style={{ height: "60vh" }}>
+                            <p className="text-center w-100">
+                                Nessun gioco trovato...
+                            </p>
+                        </div>
                     )}
                     {filteredGames?.map(game => (
                         <div key={game.id} className="col-12 col-md-6 col-lg-4">
