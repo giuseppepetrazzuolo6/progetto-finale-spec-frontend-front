@@ -8,7 +8,7 @@ export function GlobalProvider({ children }) {
     const [games, setGames] = useState([]) //variabile di stato per i record
     const [search, setSearch] = useState('') //variabile di stato per searchbar
     const [category, setCategory] = useState('') //vairabile di stato per select
-    const [sortOrder, setSortOrder] = useState('asc') //variabile di stato per ordinamento
+    const [sortOrder, setSortOrder] = useState('az') //variabile di stato per ordinamento
     const [compareIds, setCompareIds] = useState([]) //variabile di stato per fetching tramite id
     const [compareList, setCompareList] = useState([]) //variabile di stato per il confronto
 
