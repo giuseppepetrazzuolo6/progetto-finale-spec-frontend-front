@@ -67,7 +67,7 @@ export function GlobalProvider({ children }) {
     }
 
     //funzione per aggiungere record al confronto
-    const toggleCompare = useCallback((game) => {
+    const toggleCompare = (game) => {
         setCompareIds(prev => {
             if (prev.includes(game.id)) {
                 return prev.filter(id => id !== game.id)
@@ -77,7 +77,7 @@ export function GlobalProvider({ children }) {
             }
             return [...prev, game.id]
         })
-    }, [])
+    }
 
     //promise.all per gestire le chiamate API
     useEffect(() => {
@@ -100,32 +100,32 @@ export function GlobalProvider({ children }) {
         loadCompareGames()
     }, [compareIds])
 
-    const clearCompareList = useCallback(() => {
+    const clearCompareList = () => {
         setCompareIds([])
         setCompareList([])
-    }, [])
+    }
 
     //gestione lista preferiti
-    const addToFav = useCallback((game) => {
+    const addToFav = (game) => {
         setFavList(prev => {
             if (prev.find(g => g.id === game.id)) {
                 return prev
             }
             return [...prev, game]
         })
-    }, [])
+    }
 
-    const removeFromFav = useCallback((id) => {
+    const removeFromFav = (id) => {
         setFavList(prev => prev.filter(g => g.id !== id))
-    }, [])
+    }
 
-    const isInFav = useCallback((id) => {
+    const isInFav = (id) => {
         return favList.some(g => g.id === id);
-    }, [favList]);
+    }
 
-    const clearFav = useCallback(() => {
+    const clearFav = () => {
         setFavList([])
-    }, [])
+    }
 
     useEffect(() => {
         localStorage.setItem("favourites", JSON.stringify(favList))
