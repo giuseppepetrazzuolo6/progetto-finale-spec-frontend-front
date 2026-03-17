@@ -41,7 +41,7 @@ export function GlobalProvider({ children }) {
             (category === '' || g.category === category))
 
         result = [...result].sort((a, b) =>
-            sortOrder === "asc"
+            sortOrder === "az"
                 ? a.title.localeCompare(b.title)
                 : b.title.localeCompare(a.title)
         )

@@ -48,8 +48,8 @@ export default function GamesList() {
                     <button
                         aria-label="Ordina giochi"
                         onClick={() =>
-                            setSortOrder(sortOrder === "asc" ? "desc" : "asc")}>
-                        {sortOrder === "asc" ? <i className="bi bi-sort-alpha-up"></i> : <i className="bi bi-sort-alpha-up-alt"></i>}
+                            setSortOrder(sortOrder === "az" ? "za" : "az")}>
+                        {sortOrder === "az" ? <i className="bi bi-sort-alpha-up"></i> : <i className="bi bi-sort-alpha-up-alt"></i>}
                     </button>
                 </div>
                 {compareList.length > 0 && (
