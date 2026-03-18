@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useMemo, useCallback } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 const apiUrl = import.meta.env.VITE_API_URL
 
 export const GlobalContext = createContext() // creazione contenitore globale
