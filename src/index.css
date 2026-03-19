@@ -275,6 +275,13 @@ body {
     color: #e6e9ff;
 }
 
+.detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
 /* ===============================
    COMPARE SECTION
 ================================ */
