@@ -61,7 +61,7 @@ export default function GamesList() {
                 )}
                 <div className="row">
                     {filteredGames.length === 0 && (
-                        <div style={{ height: "60vh" }}>
+                        <div>
                             <p className="text-center w-100">
                                 Nessun gioco trovato...
                             </p>
